@@ -46,21 +46,15 @@ Router.post('/images', async (req, res) => {
 //login
 Router.post('/login', async (req, res) => {
     const username = req.body.username
-    const hash2 = req.body.passhash
+    const hash = req.body.passhash
 
     try {
         const user = await User.find({ username: username })
-        res.status(200).json(user)
 
-        if (hash2 === user[0].passwordHash) {
-            console.log('same');
-        }
-        else {
-            console.log('not same');
-        }
-        // bcrypt.compare(hash2, user[0].passwordHash, function(err, result) {
-        //     console.log('res',result);
-        // });
+        let result = bcrypt.compareSync(hash, user.passwordHash)
+
+        res.status(200).json({ auth: result })
+
     }
     catch (error) {
         console.log(error)
