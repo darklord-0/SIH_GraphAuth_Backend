@@ -53,7 +53,10 @@ Router.post('/login', async (req, res) => {
 
         let result = bcrypt.compareSync(hash, user[0].passwordHash)
 
-        res.status(200).json({ auth: result })
+        res.status(200).json({
+            auth: result,
+            username: user[0].username
+        })
 
     }
     catch (error) {
